@@ -1,0 +1,126 @@
+#+title: Using DUNE DAQ Spack to provide a developer environment
+
+* Intro
+
+Here we describe how to use DUNE DAQ Spack to create various types of
+developer environments.  The basic idea is:
+
+1. a Spack *installation* provides for any dependencies we need
+2. a Spack *view* provides a base "release" against which we develop
+
+To define our view we must decide:
+
+- which top-level packages are "seeds" for the dependency trees we need
+- do we need the top-level packages or just their dependnecy
+
+For example, if we wish to develop a package that requires only ~appfwk~
+and its dependencies then this package is our seed.  If we wish to
+develop ~appfwk~ itself then this package is still our seed but we will
+exclude it so that our view and only holds the dependencies of ~appfwk~. 
+
+We'll use the "seed" package ~appfwk~ at version ~1.1.1~ as an example for
+the rest of this document.  
+
+First, we check if a suitable build of our seed package already exists
+in the Spack *installation*:
+
+#+begin_example
+  $ spack find -l appfwk@1.1.1
+#+end_example
+
+If there is none, we simply install it.  Note, this needs write
+permission to the Spack *installation*.
+
+#+begin_example
+  $ spack install appfwk@1.1.1
+#+end_example
+
+The Spack *installation* may have more than one build of the same
+package and version.  You can pick precisely the one wanted by
+appending the first few characters of its hash after a slash as in:
+
+#+begin_example
+  $ spack find -d appfwk/dow6
+#+end_example
+
+* Develop on top of ~appfwk~
+
+In this case we want to develop a package, possibly a brand new one,
+on top of ~appfwk~.  To make a very easy developer environment we
+aggregate ~appfwk~ and all its dependencies in a Spack *view*.
+
+#+begin_example
+  $ spack view add -i /path/to/my/view appfwk@1.1.1
+#+end_example
+
+Replace ~@1.1.1~ with eg ~/dow6~ if wanting to select a specific build by
+its hash.
+
+Now see [[Shell Environment]].
+
+* Develop ~appfwk~ itself
+
+In this case we want to modify appfwk itself.  We make another view
+but exclude ~appfwk~ files.
+
+#+begin_example
+  $ spack view -e appfwk add -i /path/to/my/view appfwk@1.1.1
+#+end_example
+
+Now see [[Shell Environment]].
+
+* Shell Environment
+
+Once a Spack *view* is created there is no longer any requirement to
+have any special Spack related shell environment.  The Spack *view* is
+like ~/usr/local~ and so one merely has to add a single element to the
+various ~PATH~ like variables which point to directories in the *view*.
+Eg,
+
+#+begin_src shell
+myview=/path/to/my/view
+export PATH=$myview/bin:$PATH
+export CMAKE_PREFIX_PATH=$myview
+# ... etc ...
+#+end_src
+
+Using [[https://direnv.net][direnv]] this setup becomes even simpler with a ~.envrc~ file like:
+
+#+begin_src shell
+myview=/path/to/my/view
+load_prefix $myview
+path_add CMAKE_PREFIX_PATH $myview
+#+end_src
+
+You might place ~.envrc~ into wherever you plan to have your local
+source are.
+
+* Worked example: hack on ~appfwk~
+
+#+begin_example
+  $ mkdir hack ; cd hack
+  $ cat <<EOF > .envrc
+  export myview=$(pwd)/view
+  load_prefix $myview
+  path_add CMAKE_PREFIX_PATH $myview
+  EOF
+  $ direnv allow
+
+  $ git clone git@github.com:DUNE-DAQ/appfwk.git
+  $ mkdir build ; cd build
+  $ cmake ../appfwk/ -DCMAKE_INSTALL_PREFIX=$myview
+  $ make -j$(nproc)
+  $ make install 
+
+  $ which daq_application
+  $myview/bin/daq_application
+#+end_example
+
+Note, at current writing there is a bug in ~appfwk/CMakeLists.txt~.
+Normally, Spack can apply the fix, but here we are building it
+manually.  We can use Spack's fix like:
+
+#+begin_example
+  $ cd ../appfwk/
+  $ patch -p 1 < $(spack location -p appfwk)/fix-find-dqt.patch
+#+end_example

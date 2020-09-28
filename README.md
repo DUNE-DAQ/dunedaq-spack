@@ -2,6 +2,8 @@
 
 ## Quick start
 
+More info under `docs/` but here is a quick start.
+
 ```
 git clone https://github.com/DUNE-DAQ/dunedaq-spack.git
 spack repo add dunedaq-spack

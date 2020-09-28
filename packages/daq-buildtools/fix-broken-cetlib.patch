@@ -1,0 +1,18 @@
+--- a/cmake/Findcetlib.cmake	2020-09-23 13:45:22.000000000 -0400
++++ a/cmake/Findcetlib.cmake	2020-09-28 13:37:06.871415017 -0400
+@@ -6,8 +6,11 @@
+   find_library(CETLIB_EXCEPT NAMES libcetlib_except.so)
+   set(cetlib_FOUND TRUE)
+ else()
+-	# Spack
+-	find_package(cetlib REQUIRED CONFIG)
+-	set(CETLIB cetlib)
+-	set(CETLIB_EXCEPT cetlib_except)
++  # Spack
++  find_package(cetlib REQUIRED CONFIG)
++  find_library(CETLIB NAMES libcetlib.so)
++  find_library(CETLIB_EXCEPT NAMES libcetlib_except.so)
++  set(cetlib_FOUND TRUE)
+ endif()
++message(STATUS "Found cetlib ${cetlib_VERSION} at ${cetlib_DIR}")
++message(STATUS "Found cetlib_except ${cetlib_except_VERSION} at ${cetlib_except_DIR}")

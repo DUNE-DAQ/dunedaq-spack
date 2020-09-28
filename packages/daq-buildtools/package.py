@@ -3,23 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install daq-buildtools
-#
-# You can edit this file again by typing:
-#
-#     spack edit daq-buildtools
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack import *
 
 class DaqBuildtools(CMakePackage):
@@ -34,3 +17,6 @@ class DaqBuildtools(CMakePackage):
 
     version('1.1.1', sha256='d9476e12c4727b0069e37382529d126c01d3d1e1cd2cab474247c16736ea03b4')
     version('develop', branch='develop')
+
+    patch("fix-broken-cetlib.patch")
+    
