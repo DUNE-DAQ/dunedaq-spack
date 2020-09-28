@@ -1,4 +1,8 @@
 * Deploy
+  :PROPERTIES:
+  :CUSTOM_ID: deploy
+  :END:
+
 
 Deployment needs discussion among stakeholders and there may be more
 than one solution depending on needs.
