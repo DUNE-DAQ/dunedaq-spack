@@ -13,6 +13,7 @@ class Appfwk(CMakePackage):
     url      = "https://github.com/DUNE-DAQ/appfwk/archive/v1.1.0.tar.gz"
     git      = "https://github.com/DUNE-DAQ/appfwk.git"
 
+    version('bv-config-proto', branch='bv/config-proto')
     version('spack-build', branch='spack-build')
     version('develop', branch='develop')
     version('1.1.1', sha256='0359717ed285d9ac1e2bcfdb5da23e02f3315c5be38ee49080265832558e8ede')
