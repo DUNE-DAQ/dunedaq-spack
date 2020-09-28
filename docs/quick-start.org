@@ -1,4 +1,8 @@
 * Quick Start
+  :PROPERTIES:
+  :CUSTOM_ID: quick-start
+  :END:
+
 
 First, quick start for Spack itself:
 

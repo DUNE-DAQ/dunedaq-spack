@@ -1,8 +1,16 @@
 * Users
+  :PROPERTIES:
+  :CUSTOM_ID: users
+  :END:
+
 
 Spack supports a number of ways to use a Spack *installation*.
 
 ** Modules in Spack
+   :PROPERTIES:
+   :CUSTOM_ID: mod-in
+   :END:
+
 
 Spack supports "environment modules" which may be loaded directly from
 Spack's environment.  
@@ -14,6 +22,9 @@ daq_application [...args...]
 #+end_example
 
 ** Modules outside of Spack
+   :PROPERTIES:
+   :CUSTOM_ID: mod-out
+   :END:
 
 You can extract the shell setup so that one need not run inside the
 Spack shell environment.
@@ -25,6 +36,9 @@ daq_application [...args...]
 #+end_example
 
 ** Views
+   :PROPERTIES:
+   :CUSTOM_ID: views
+   :END:
 
 Instead of using environment, Spack can use the file system to
 aggregate the many packages into a simple *view*.
@@ -39,6 +53,9 @@ Once made, the *view* may be used either inside or outside the Spack
 shell environment.
 
 ** UPS
+   :PROPERTIES:
+   :CUSTOM_ID: oops
+   :END:
 
 In principle, one may generate UPS "table" files from Spack info in a
 similar manner as is done for environment modules.  This is left as an

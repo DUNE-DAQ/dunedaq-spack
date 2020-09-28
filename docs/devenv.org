@@ -1,6 +1,13 @@
 * Developers
+  :PROPERTIES:
+  :CUSTOM_ID: dev
+  :END:
+
 
 ** Intro
+   :PROPERTIES:
+   :CUSTOM_ID: dev-intro
+   :END:
 
 Here we describe how to use DUNE DAQ Spack to create various types of
 developer environments.  The basic idea is:
@@ -44,6 +51,9 @@ appending the first few characters of its hash after a slash as in:
 #+end_example
 
 ** Develop on top of ~appfwk~
+   :PROPERTIES:
+   :CUSTOM_ID: dev-on
+   :END:
 
 In this case we want to develop a package, possibly a brand new one,
 on top of ~appfwk~.  To make a very easy developer environment we
@@ -59,6 +69,9 @@ its hash.
 Now see [[Shell Environment]].
 
 ** Develop ~appfwk~ itself
+   :PROPERTIES:
+   :CUSTOM_ID: dev-in
+   :END:
 
 In this case we want to modify appfwk itself.  We make another view
 but exclude ~appfwk~ files.
@@ -70,6 +83,9 @@ but exclude ~appfwk~ files.
 Now see [[Shell Environment]].
 
 ** Shell Environment
+   :PROPERTIES:
+   :CUSTOM_ID: dev-sh
+   :END:
 
 Once a Spack *view* is created there is no longer any requirement to
 have any special Spack related shell environment.  The Spack *view* is
@@ -96,6 +112,9 @@ You might place ~.envrc~ into wherever you plan to have your local
 source are.
 
 ** Worked example: hack on ~appfwk~
+   :PROPERTIES:
+   :CUSTOM_ID: dev-ex
+   :END:
 
 #+begin_example
   $ mkdir hack ; cd hack
@@ -126,6 +145,9 @@ manually.  We can use Spack's fix like:
 #+end_example
 
 ** Adding a package to Spack
+   :PROPERTIES:
+   :CUSTOM_ID: dev-add
+   :END:
 
 At some point after starting to develop a package you will likely want
 to have it built by Spack.  To do that, a simple Spack ~package.py~ is

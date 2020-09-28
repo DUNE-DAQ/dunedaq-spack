@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-28 Mon 15:37 -->
+<!-- 2020-09-28 Mon 15:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DUNE DAQ Spack</title>
@@ -256,33 +256,33 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9ca8b41">Quick Start</a></li>
-<li><a href="#org379be86">Users</a>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#users">Users</a>
 <ul>
-<li><a href="#orgefe0916">Modules in Spack</a></li>
-<li><a href="#orgfc99bb9">Modules outside of Spack</a></li>
-<li><a href="#orgc471022">Views</a></li>
-<li><a href="#org5a976c6">UPS</a></li>
+<li><a href="#mod-in">Modules in Spack</a></li>
+<li><a href="#mod-out">Modules outside of Spack</a></li>
+<li><a href="#views">Views</a></li>
+<li><a href="#oops">UPS</a></li>
 </ul>
 </li>
-<li><a href="#org635dca3">Developers</a>
+<li><a href="#dev">Developers</a>
 <ul>
-<li><a href="#orgfedf39e">Intro</a></li>
-<li><a href="#org6b84b2c">Develop on top of <code>appfwk</code></a></li>
-<li><a href="#orgb44afee">Develop <code>appfwk</code> itself</a></li>
-<li><a href="#org0e9f05c">Shell Environment</a></li>
-<li><a href="#org2d2dbaf">Worked example: hack on <code>appfwk</code></a></li>
-<li><a href="#org30681bc">Adding a package to Spack</a></li>
+<li><a href="#dev-intro">Intro</a></li>
+<li><a href="#dev-on">Develop on top of <code>appfwk</code></a></li>
+<li><a href="#dev-in">Develop <code>appfwk</code> itself</a></li>
+<li><a href="#dev-sh">Shell Environment</a></li>
+<li><a href="#dev-ex">Worked example: hack on <code>appfwk</code></a></li>
+<li><a href="#dev-add">Adding a package to Spack</a></li>
 </ul>
 </li>
-<li><a href="#orga05c931">Deploy</a></li>
+<li><a href="#org96c9412">Deploy</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org9ca8b41" class="outline-2">
-<h2 id="org9ca8b41">Quick Start</h2>
-<div class="outline-text-2" id="text-org9ca8b41">
+<div id="outline-container-quick-start" class="outline-2">
+<h2 id="quick-start">Quick Start</h2>
+<div class="outline-text-2" id="text-quick-start">
 <p>
 First, quick start for Spack itself:
 </p>
@@ -318,17 +318,17 @@ packages and through them the full dependency tree.
 </div>
 </div>
 
-<div id="outline-container-org379be86" class="outline-2">
-<h2 id="org379be86">Users</h2>
-<div class="outline-text-2" id="text-org379be86">
+<div id="outline-container-users" class="outline-2">
+<h2 id="users">Users</h2>
+<div class="outline-text-2" id="text-users">
 <p>
 Spack supports a number of ways to use a Spack <b>installation</b>.
 </p>
 </div>
 
-<div id="outline-container-orgefe0916" class="outline-3">
-<h3 id="orgefe0916">Modules in Spack</h3>
-<div class="outline-text-3" id="text-orgefe0916">
+<div id="outline-container-mod-in" class="outline-3">
+<h3 id="mod-in">Modules in Spack</h3>
+<div class="outline-text-3" id="text-mod-in">
 <p>
 Spack supports "environment modules" which may be loaded directly from
 Spack's environment.  
@@ -342,9 +342,9 @@ daq_application [...args...]
 </div>
 </div>
 
-<div id="outline-container-orgfc99bb9" class="outline-3">
-<h3 id="orgfc99bb9">Modules outside of Spack</h3>
-<div class="outline-text-3" id="text-orgfc99bb9">
+<div id="outline-container-mod-out" class="outline-3">
+<h3 id="mod-out">Modules outside of Spack</h3>
+<div class="outline-text-3" id="text-mod-out">
 <p>
 You can extract the shell setup so that one need not run inside the
 Spack shell environment.
@@ -358,9 +358,9 @@ daq_application [...args...]
 </div>
 </div>
 
-<div id="outline-container-orgc471022" class="outline-3">
-<h3 id="orgc471022">Views</h3>
-<div class="outline-text-3" id="text-orgc471022">
+<div id="outline-container-views" class="outline-3">
+<h3 id="views">Views</h3>
+<div class="outline-text-3" id="text-views">
 <p>
 Instead of using environment, Spack can use the file system to
 aggregate the many packages into a simple <b>view</b>.
@@ -379,9 +379,9 @@ shell environment.
 </div>
 </div>
 
-<div id="outline-container-org5a976c6" class="outline-3">
-<h3 id="org5a976c6">UPS</h3>
-<div class="outline-text-3" id="text-org5a976c6">
+<div id="outline-container-oops" class="outline-3">
+<h3 id="oops">UPS</h3>
+<div class="outline-text-3" id="text-oops">
 <p>
 In principle, one may generate UPS "table" files from Spack info in a
 similar manner as is done for environment modules.  This is left as an
@@ -391,13 +391,15 @@ exercise to the interested user.
 </div>
 </div>
 
-<div id="outline-container-org635dca3" class="outline-2">
-<h2 id="org635dca3">Developers</h2>
-<div class="outline-text-2" id="text-org635dca3">
+<div id="outline-container-dev" class="outline-2">
+<h2 id="dev">Developers</h2>
+<div class="outline-text-2" id="text-dev">
 </div>
-<div id="outline-container-orgfedf39e" class="outline-3">
-<h3 id="orgfedf39e">Intro</h3>
-<div class="outline-text-3" id="text-orgfedf39e">
+
+
+<div id="outline-container-dev-intro" class="outline-3">
+<h3 id="dev-intro">Intro</h3>
+<div class="outline-text-3" id="text-dev-intro">
 <p>
 Here we describe how to use DUNE DAQ Spack to create various types of
 developer environments.  The basic idea is:
@@ -459,9 +461,9 @@ $ spack find -d appfwk/dow6
 </div>
 </div>
 
-<div id="outline-container-org6b84b2c" class="outline-3">
-<h3 id="org6b84b2c">Develop on top of <code>appfwk</code></h3>
-<div class="outline-text-3" id="text-org6b84b2c">
+<div id="outline-container-dev-on" class="outline-3">
+<h3 id="dev-on">Develop on top of <code>appfwk</code></h3>
+<div class="outline-text-3" id="text-dev-on">
 <p>
 In this case we want to develop a package, possibly a brand new one,
 on top of <code>appfwk</code>.  To make a very easy developer environment we
@@ -478,14 +480,14 @@ its hash.
 </p>
 
 <p>
-Now see <a href="#org0e9f05c">Shell Environment</a>.
+Now see <a href="#dev-sh">Shell Environment</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgb44afee" class="outline-3">
-<h3 id="orgb44afee">Develop <code>appfwk</code> itself</h3>
-<div class="outline-text-3" id="text-orgb44afee">
+<div id="outline-container-dev-in" class="outline-3">
+<h3 id="dev-in">Develop <code>appfwk</code> itself</h3>
+<div class="outline-text-3" id="text-dev-in">
 <p>
 In this case we want to modify appfwk itself.  We make another view
 but exclude <code>appfwk</code> files.
@@ -496,14 +498,14 @@ $ spack view -e appfwk add -i /path/to/my/view appfwk@1.1.1
 </pre>
 
 <p>
-Now see <a href="#org0e9f05c">Shell Environment</a>.
+Now see <a href="#dev-sh">Shell Environment</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0e9f05c" class="outline-3">
-<h3 id="org0e9f05c">Shell Environment</h3>
-<div class="outline-text-3" id="text-org0e9f05c">
+<div id="outline-container-dev-sh" class="outline-3">
+<h3 id="dev-sh">Shell Environment</h3>
+<div class="outline-text-3" id="text-dev-sh">
 <p>
 Once a Spack <b>view</b> is created there is no longer any requirement to
 have any special Spack related shell environment.  The Spack <b>view</b> is
@@ -538,9 +540,9 @@ source are.
 </div>
 </div>
 
-<div id="outline-container-org2d2dbaf" class="outline-3">
-<h3 id="org2d2dbaf">Worked example: hack on <code>appfwk</code></h3>
-<div class="outline-text-3" id="text-org2d2dbaf">
+<div id="outline-container-dev-ex" class="outline-3">
+<h3 id="dev-ex">Worked example: hack on <code>appfwk</code></h3>
+<div class="outline-text-3" id="text-dev-ex">
 <pre class="example">
 $ mkdir hack ; cd hack
 $ cat &lt;&lt;EOF &gt; .envrc
@@ -573,9 +575,9 @@ $ patch -p 1 &lt; $(spack location -p appfwk)/fix-find-dqt.patch
 </div>
 </div>
 
-<div id="outline-container-org30681bc" class="outline-3">
-<h3 id="org30681bc">Adding a package to Spack</h3>
-<div class="outline-text-3" id="text-org30681bc">
+<div id="outline-container-dev-add" class="outline-3">
+<h3 id="dev-add">Adding a package to Spack</h3>
+<div class="outline-text-3" id="text-dev-add">
 <p>
 At some point after starting to develop a package you will likely want
 to have it built by Spack.  To do that, a simple Spack <code>package.py</code> is
@@ -632,9 +634,9 @@ besides running <code>cmake/make/make install</code> see the Spack documentation
 </div>
 </div>
 
-<div id="outline-container-orga05c931" class="outline-2">
-<h2 id="orga05c931">Deploy</h2>
-<div class="outline-text-2" id="text-orga05c931">
+<div id="outline-container-org96c9412" class="outline-2">
+<h2 id="org96c9412">Deploy</h2>
+<div class="outline-text-2" id="text-org96c9412">
 <p>
 Deployment needs discussion among stakeholders and there may be more
 than one solution depending on needs.
@@ -660,7 +662,7 @@ Some possible options:
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: DUNE DAQ group</p>
-<p class="date">Created: 2020-09-28 Mon 15:37</p>
+<p class="date">Created: 2020-09-28 Mon 15:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
