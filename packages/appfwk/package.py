@@ -24,9 +24,8 @@ from spack import *
 
 
 class Appfwk(CMakePackage):
-    """FIXME: Put a proper description of your package here."""
+    """DUNE DAQ application framework."""
 
-    # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://github.com/DUNE-DAQ/appfwk"
     url      = "https://github.com/DUNE-DAQ/appfwk/archive/v1.1.0.tar.gz"
     git      = "https://github.com/DUNE-DAQ/appfwk.git"
