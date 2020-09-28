@@ -3,30 +3,12 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install py-jsonnet
-#
-# You can edit this file again by typing:
-#
-#     spack edit py-jsonnet
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack import *
 
 
 class PyJsonnet(PythonPackage):
     """Python bindings to Jsonnet C library."""
 
-    # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://jsonnet.org/ref/bindings.html"
     url      = "https://pypi.io/packages/source/j/jsonnet/jsonnet-0.16.0.tar.gz"
 
