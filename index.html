@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-09-28 Mon 15:37 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DUNE DAQ Spack</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="DUNE DAQ group" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style> #content{max-width:1800px;}</style>
+<style> p{max-width:800px;}</style>
+<style> li{max-width:800px;}</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">DUNE DAQ Spack</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9ca8b41">Quick Start</a></li>
+<li><a href="#org379be86">Users</a>
+<ul>
+<li><a href="#orgefe0916">Modules in Spack</a></li>
+<li><a href="#orgfc99bb9">Modules outside of Spack</a></li>
+<li><a href="#orgc471022">Views</a></li>
+<li><a href="#org5a976c6">UPS</a></li>
+</ul>
+</li>
+<li><a href="#org635dca3">Developers</a>
+<ul>
+<li><a href="#orgfedf39e">Intro</a></li>
+<li><a href="#org6b84b2c">Develop on top of <code>appfwk</code></a></li>
+<li><a href="#orgb44afee">Develop <code>appfwk</code> itself</a></li>
+<li><a href="#org0e9f05c">Shell Environment</a></li>
+<li><a href="#org2d2dbaf">Worked example: hack on <code>appfwk</code></a></li>
+<li><a href="#org30681bc">Adding a package to Spack</a></li>
+</ul>
+</li>
+<li><a href="#orga05c931">Deploy</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9ca8b41" class="outline-2">
+<h2 id="org9ca8b41">Quick Start</h2>
+<div class="outline-text-2" id="text-org9ca8b41">
+<p>
+First, quick start for Spack itself:
+</p>
+
+<pre class="example">
+git clone https://github.com/spack/spack.git
+source spack/share/spack/setup-env.sh
+</pre>
+
+<p>
+And, adding the DUNE DAQ Spack repository
+</p>
+
+<pre class="example">
+git clone https://github.com/DUNE-DAQ/dunedaq-spack.git
+spack repo add dunedaq-spack
+</pre>
+
+<p>
+Let's build a stack of software!
+</p>
+
+<pre class="example">
+spack info dunedaqapps
+spack install dunedaqapps@0.0.1
+</pre>
+
+<p>
+This builds <code>dunedaqapps</code> which is a Spack "bundle" package.  It does
+not provide any code but simply depends on the various DUNE DAQ
+packages and through them the full dependency tree.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org379be86" class="outline-2">
+<h2 id="org379be86">Users</h2>
+<div class="outline-text-2" id="text-org379be86">
+<p>
+Spack supports a number of ways to use a Spack <b>installation</b>.
+</p>
+</div>
+
+<div id="outline-container-orgefe0916" class="outline-3">
+<h3 id="orgefe0916">Modules in Spack</h3>
+<div class="outline-text-3" id="text-orgefe0916">
+<p>
+Spack supports "environment modules" which may be loaded directly from
+Spack's environment.  
+</p>
+
+<pre class="example">
+source spack/share/spack/setup-env.sh
+spack load dunedaqapps@0.0.1
+daq_application [...args...]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgfc99bb9" class="outline-3">
+<h3 id="orgfc99bb9">Modules outside of Spack</h3>
+<div class="outline-text-3" id="text-orgfc99bb9">
+<p>
+You can extract the shell setup so that one need not run inside the
+Spack shell environment.
+</p>
+
+<pre class="example">
+command spack load --sh dunedaqapps@0.0.1 &gt; ddq-load.sh
+source ddq-load.sh
+daq_application [...args...]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgc471022" class="outline-3">
+<h3 id="orgc471022">Views</h3>
+<div class="outline-text-3" id="text-orgc471022">
+<p>
+Instead of using environment, Spack can use the file system to
+aggregate the many packages into a simple <b>view</b>.
+</p>
+
+<pre class="example">
+spack view add -i /path/to/my/view dunedaqapps@0.0.1
+PATH=/path/to/my/view:$PATH
+daq_application [...args...]
+</pre>
+
+<p>
+Once made, the <b>view</b> may be used either inside or outside the Spack
+shell environment.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5a976c6" class="outline-3">
+<h3 id="org5a976c6">UPS</h3>
+<div class="outline-text-3" id="text-org5a976c6">
+<p>
+In principle, one may generate UPS "table" files from Spack info in a
+similar manner as is done for environment modules.  This is left as an
+exercise to the interested user.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org635dca3" class="outline-2">
+<h2 id="org635dca3">Developers</h2>
+<div class="outline-text-2" id="text-org635dca3">
+</div>
+<div id="outline-container-orgfedf39e" class="outline-3">
+<h3 id="orgfedf39e">Intro</h3>
+<div class="outline-text-3" id="text-orgfedf39e">
+<p>
+Here we describe how to use DUNE DAQ Spack to create various types of
+developer environments.  The basic idea is:
+</p>
+
+<ol class="org-ol">
+<li>a Spack <b>installation</b> provides for any dependencies we need</li>
+<li>a Spack <b>view</b> provides a base "release" against which we develop</li>
+</ol>
+
+<p>
+To define our view we must decide:
+</p>
+
+<ul class="org-ul">
+<li>which top-level packages are "seeds" for the dependency trees we need</li>
+<li>do we need the top-level packages or just their dependnecy</li>
+</ul>
+
+<p>
+For example, if we wish to develop a package that requires only <code>appfwk</code>
+and its dependencies then this package is our seed.  If we wish to
+develop <code>appfwk</code> itself then this package is still our seed but we will
+exclude it so that our view and only holds the dependencies of <code>appfwk</code>. 
+</p>
+
+<p>
+We'll use the "seed" package <code>appfwk</code> at version <code>1.1.1</code> as an example for
+the rest of this document.  
+</p>
+
+<p>
+First, we check if a suitable build of our seed package already exists
+in the Spack <b>installation</b>:
+</p>
+
+<pre class="example">
+$ spack find -l appfwk@1.1.1
+</pre>
+
+<p>
+If there is none, we simply install it.  Note, this needs write
+permission to the Spack <b>installation</b>.
+</p>
+
+<pre class="example">
+$ spack install appfwk@1.1.1
+</pre>
+
+<p>
+The Spack <b>installation</b> may have more than one build of the same
+package and version.  You can pick precisely the one wanted by
+appending the first few characters of its hash after a slash as in:
+</p>
+
+<pre class="example">
+$ spack find -d appfwk/dow6
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6b84b2c" class="outline-3">
+<h3 id="org6b84b2c">Develop on top of <code>appfwk</code></h3>
+<div class="outline-text-3" id="text-org6b84b2c">
+<p>
+In this case we want to develop a package, possibly a brand new one,
+on top of <code>appfwk</code>.  To make a very easy developer environment we
+aggregate <code>appfwk</code> and all its dependencies in a Spack <b>view</b>.
+</p>
+
+<pre class="example">
+$ spack view add -i /path/to/my/view appfwk@1.1.1
+</pre>
+
+<p>
+Replace <code>@1.1.1</code> with eg <code>/dow6</code> if wanting to select a specific build by
+its hash.
+</p>
+
+<p>
+Now see <a href="#org0e9f05c">Shell Environment</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb44afee" class="outline-3">
+<h3 id="orgb44afee">Develop <code>appfwk</code> itself</h3>
+<div class="outline-text-3" id="text-orgb44afee">
+<p>
+In this case we want to modify appfwk itself.  We make another view
+but exclude <code>appfwk</code> files.
+</p>
+
+<pre class="example">
+$ spack view -e appfwk add -i /path/to/my/view appfwk@1.1.1
+</pre>
+
+<p>
+Now see <a href="#org0e9f05c">Shell Environment</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0e9f05c" class="outline-3">
+<h3 id="org0e9f05c">Shell Environment</h3>
+<div class="outline-text-3" id="text-org0e9f05c">
+<p>
+Once a Spack <b>view</b> is created there is no longer any requirement to
+have any special Spack related shell environment.  The Spack <b>view</b> is
+like <code>/usr/local</code> and so one merely has to add a single element to the
+various <code>PATH</code> like variables which point to directories in the <b>view</b>.
+Eg,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #fcaf3e;">myview</span>=/path/to/my/view
+<span style="color: #e090d7;">export</span> <span style="color: #fcaf3e;">PATH</span>=$<span style="color: #fcaf3e;">myview</span>/bin:$<span style="color: #fcaf3e;">PATH</span>
+<span style="color: #e090d7;">export</span> <span style="color: #fcaf3e;">CMAKE_PREFIX_PATH</span>=$<span style="color: #fcaf3e;">myview</span>
+<span style="color: #73d216;"># </span><span style="color: #73d216;">... etc ...</span>
+</pre>
+</div>
+
+<p>
+Using <a href="https://direnv.net">direnv</a> this setup becomes even simpler with a <code>.envrc</code> file like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #fcaf3e;">myview</span>=/path/to/my/view
+load_prefix $<span style="color: #fcaf3e;">myview</span>
+path_add CMAKE_PREFIX_PATH $<span style="color: #fcaf3e;">myview</span>
+</pre>
+</div>
+
+<p>
+You might place <code>.envrc</code> into wherever you plan to have your local
+source are.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2d2dbaf" class="outline-3">
+<h3 id="org2d2dbaf">Worked example: hack on <code>appfwk</code></h3>
+<div class="outline-text-3" id="text-org2d2dbaf">
+<pre class="example">
+$ mkdir hack ; cd hack
+$ cat &lt;&lt;EOF &gt; .envrc
+export myview=$(pwd)/view
+load_prefix $myview
+path_add CMAKE_PREFIX_PATH $myview
+EOF
+$ direnv allow
+
+$ git clone git@github.com:DUNE-DAQ/appfwk.git
+$ mkdir build ; cd build
+$ cmake ../appfwk/ -DCMAKE_INSTALL_PREFIX=$myview
+$ make -j$(nproc)
+$ make install 
+
+$ which daq_application
+$myview/bin/daq_application
+</pre>
+
+<p>
+Note, at current writing there is a bug in <code>appfwk/CMakeLists.txt</code>.
+Normally, Spack can apply the fix, but here we are building it
+manually.  We can use Spack's fix like:
+</p>
+
+<pre class="example">
+$ cd ../appfwk/
+$ patch -p 1 &lt; $(spack location -p appfwk)/fix-find-dqt.patch
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org30681bc" class="outline-3">
+<h3 id="org30681bc">Adding a package to Spack</h3>
+<div class="outline-text-3" id="text-org30681bc">
+<p>
+At some point after starting to develop a package you will likely want
+to have it built by Spack.  To do that, a simple Spack <code>package.py</code> is
+added to DUNE DAQ's <code>dunedaq-spack</code> which provides a Spack <b>repository</b>.
+</p>
+
+<p>
+If not already done, add it:
+</p>
+
+<pre class="example">
+$ git clone git@github.com:DUNE-DAQ/dunedaq-spack.git
+$ spack repo add dunedaq-spack
+</pre>
+
+<p>
+You can then create a new Spack package with
+</p>
+
+<pre class="example">
+$ spack create -r dunedaq-spack -n mypackage -t cmake
+</pre>
+
+<p>
+This will create the package directory under <code>dunedaq-spack</code> and open
+your <code>$VISUAL</code> editor with a pre-populated template.  At any time later
+you may revisit this <code>package.py</code> with
+</p>
+
+<pre class="example">
+$ spack edit mypackage
+</pre>
+
+<p>
+You may look at <code>appfwk/package.py</code> or <code>listrev/package.py</code> which will be
+beside <code>mypackage/package.py</code> as an example.  Fill in:
+</p>
+
+<dl class="org-dl">
+<dt><code>homepage</code></dt><dd>a link to some kind of "home" for your package, which could simply be its GitHub page</dd>
+<dt><code>url</code></dt><dd>a URL for one release, again may be provided by GitHub.  Not, as new versions are added this URL can be but need not be updated.</dd>
+<dt><code>git</code></dt><dd>a URL to access the git repository, assuming you will build branches/tags</dd>
+<dt><code>version()</code></dt><dd>specify one or more versions, for releases you may generate these lines with <code>spack checksum mypackage</code></dd>
+<dt><code>depends_on()</code></dt><dd>list the other packages your package <b>immediately</b> depends on.  Do not list any others.  Also, avoid listing any dependencies with explicit versions unless you know what you are doing.</dd>
+<dt><code>patch()</code></dt><dd>optionally define a patch to apply (these may typically be version dependent).</dd>
+</dl>
+
+<p>
+That's it.  It should be the case that any <code>appfwk</code>-like packages need
+no special Spack methods defined.  If your package has special needs
+besides running <code>cmake/make/make install</code> see the Spack documentation.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga05c931" class="outline-2">
+<h2 id="orga05c931">Deploy</h2>
+<div class="outline-text-2" id="text-orga05c931">
+<p>
+Deployment needs discussion among stakeholders and there may be more
+than one solution depending on needs.
+</p>
+
+<p>
+The Spack <b>installation</b> is simply a directory of binaries (like a UPS
+products area). 
+</p>
+
+<p>
+Some possible options:
+</p>
+
+<dl class="org-dl">
+<dt>CVMFS</dt><dd>deploy an "official" Spack <b>installation</b> via CVMFS to the world</dd>
+<dt>NFS</dt><dd>or other local network file system</dd>
+<dt>rsync</dt><dd>simply rsync the Installation from a development account to a deployment area</dd>
+<dt>diy</dt><dd>build and use the software stack for yourself</dd>
+</dl>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: DUNE DAQ group</p>
+<p class="date">Created: 2020-09-28 Mon 15:37</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

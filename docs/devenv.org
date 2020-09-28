@@ -1,6 +1,6 @@
-#+title: Using DUNE DAQ Spack to provide a developer environment
+* Developers
 
-* Intro
+** Intro
 
 Here we describe how to use DUNE DAQ Spack to create various types of
 developer environments.  The basic idea is:
@@ -43,7 +43,7 @@ appending the first few characters of its hash after a slash as in:
   $ spack find -d appfwk/dow6
 #+end_example
 
-* Develop on top of ~appfwk~
+** Develop on top of ~appfwk~
 
 In this case we want to develop a package, possibly a brand new one,
 on top of ~appfwk~.  To make a very easy developer environment we
@@ -58,7 +58,7 @@ its hash.
 
 Now see [[Shell Environment]].
 
-* Develop ~appfwk~ itself
+** Develop ~appfwk~ itself
 
 In this case we want to modify appfwk itself.  We make another view
 but exclude ~appfwk~ files.
@@ -69,7 +69,7 @@ but exclude ~appfwk~ files.
 
 Now see [[Shell Environment]].
 
-* Shell Environment
+** Shell Environment
 
 Once a Spack *view* is created there is no longer any requirement to
 have any special Spack related shell environment.  The Spack *view* is
@@ -95,7 +95,7 @@ path_add CMAKE_PREFIX_PATH $myview
 You might place ~.envrc~ into wherever you plan to have your local
 source are.
 
-* Worked example: hack on ~appfwk~
+** Worked example: hack on ~appfwk~
 
 #+begin_example
   $ mkdir hack ; cd hack
@@ -124,3 +124,44 @@ manually.  We can use Spack's fix like:
   $ cd ../appfwk/
   $ patch -p 1 < $(spack location -p appfwk)/fix-find-dqt.patch
 #+end_example
+
+** Adding a package to Spack
+
+At some point after starting to develop a package you will likely want
+to have it built by Spack.  To do that, a simple Spack ~package.py~ is
+added to DUNE DAQ's ~dunedaq-spack~ which provides a Spack *repository*.
+
+If not already done, add it:
+
+#+begin_example
+  $ git clone git@github.com:DUNE-DAQ/dunedaq-spack.git
+  $ spack repo add dunedaq-spack
+#+end_example
+
+You can then create a new Spack package with
+
+#+begin_example
+  $ spack create -r dunedaq-spack -n mypackage -t cmake
+#+end_example
+
+This will create the package directory under ~dunedaq-spack~ and open
+your ~$VISUAL~ editor with a pre-populated template.  At any time later
+you may revisit this ~package.py~ with
+
+#+begin_example
+  $ spack edit mypackage
+#+end_example
+
+You may look at ~appfwk/package.py~ or ~listrev/package.py~ which will be
+beside ~mypackage/package.py~ as an example.  Fill in:
+
+- ~homepage~ :: a link to some kind of "home" for your package, which could simply be its GitHub page
+- ~url~ :: a URL for one release, again may be provided by GitHub.  Not, as new versions are added this URL can be but need not be updated.
+- ~git~ :: a URL to access the git repository, assuming you will build branches/tags
+- ~version()~ :: specify one or more versions, for releases you may generate these lines with ~spack checksum mypackage~
+- ~depends_on()~ :: list the other packages your package *immediately* depends on.  Do not list any others.  Also, avoid listing any dependencies with explicit versions unless you know what you are doing.
+- ~patch()~ :: optionally define a patch to apply (these may typically be version dependent).
+
+That's it.  It should be the case that any ~appfwk~-like packages need
+no special Spack methods defined.  If your package has special needs
+besides running ~cmake/make/make install~ see the Spack documentation.

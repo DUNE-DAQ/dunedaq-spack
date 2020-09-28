@@ -1,0 +1,45 @@
+* Users
+
+Spack supports a number of ways to use a Spack *installation*.
+
+** Modules in Spack
+
+Spack supports "environment modules" which may be loaded directly from
+Spack's environment.  
+
+#+begin_example
+source spack/share/spack/setup-env.sh
+spack load dunedaqapps@0.0.1
+daq_application [...args...]
+#+end_example
+
+** Modules outside of Spack
+
+You can extract the shell setup so that one need not run inside the
+Spack shell environment.
+
+#+begin_example
+command spack load --sh dunedaqapps@0.0.1 > ddq-load.sh
+source ddq-load.sh
+daq_application [...args...]
+#+end_example
+
+** Views
+
+Instead of using environment, Spack can use the file system to
+aggregate the many packages into a simple *view*.
+
+#+begin_example
+spack view add -i /path/to/my/view dunedaqapps@0.0.1
+PATH=/path/to/my/view:$PATH
+daq_application [...args...]
+#+end_example
+
+Once made, the *view* may be used either inside or outside the Spack
+shell environment.
+
+** UPS
+
+In principle, one may generate UPS "table" files from Spack info in a
+similar manner as is done for environment modules.  This is left as an
+exercise to the interested user.

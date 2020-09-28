@@ -1,0 +1,27 @@
+* Quick Start
+
+First, quick start for Spack itself:
+
+#+begin_example
+git clone https://github.com/spack/spack.git
+source spack/share/spack/setup-env.sh
+#+end_example
+
+And, adding the DUNE DAQ Spack repository
+
+#+begin_example
+git clone https://github.com/DUNE-DAQ/dunedaq-spack.git
+spack repo add dunedaq-spack
+#+end_example
+
+Let's build a stack of software!
+
+#+begin_example
+spack info dunedaqapps
+spack install dunedaqapps@0.0.1
+#+end_example
+
+This builds ~dunedaqapps~ which is a Spack "bundle" package.  It does
+not provide any code but simply depends on the various DUNE DAQ
+packages and through them the full dependency tree.
+

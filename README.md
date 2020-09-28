@@ -1,46 +1,9 @@
 # Spack repository for appfwk and its dependencies
 
-## Quick start
+Documentation is at https://dune-daq.github.io/dunedaq-spack/.
 
-More info under `docs/` but here is a quick start.
+Or, locally it is found under [docs/](docs/).
 
-```
-git clone https://github.com/DUNE-DAQ/dunedaq-spack.git
-spack repo add dunedaq-spack
-spack info dunedaqapps
-spack install dunedaqapps@0.0.1
-```
-
-This builds a Spack "bundle" which includes the various DUNE DAQ
-packages and their dependencies.
-
-### Surgical install
-
-This repo may also be used to install a more portion:
-
-```
-spack info appfwk
-spack install appfwk@X.Y.Z
-```
-
-### Developing
-
-To develop your own code, eg against `appfwk`, consider:
-
-```
-spack view add -i ~/opt/mydaqdev appfwk@1.1.1
-```
-
-and add that directory to your `CMAKE_PREFIX_PATH`.  
-
-To develop `appfwk` itself you may instead make a view that includes
-all of the dependencies for `appfwk` but excludes the package itself:
-
-```
-spack view -e appfwk add -i ~/opt/mydaqdev appfwk@1.1.1
-
-```
-You may now `git clone` your own copy of `appfwk` source and build against packages in the view.  Happy hacking.
 
 
 ## Packages modified from the official spack distribution (folly and its dependencies):

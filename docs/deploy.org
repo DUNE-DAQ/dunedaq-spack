@@ -1,0 +1,15 @@
+* Deploy
+
+Deployment needs discussion among stakeholders and there may be more
+than one solution depending on needs.
+
+The Spack *installation* is simply a directory of binaries (like a UPS
+products area). 
+
+Some possible options:
+
+- CVMFS :: deploy an "official" Spack *installation* via CVMFS to the world
+- NFS :: or other local network file system
+- rsync :: simply rsync the Installation from a development account to a deployment area
+- diy :: build and use the software stack for yourself
+
