@@ -55,3 +55,6 @@ class Dunedaqapps(BundlePackage):
     # tags will eventually work like 1.1.1.
     depends_on('daq-buildtools@1.1.1', when='@develop')
     depends_on('appfwk@develop', when='@develop')
+    depends_on('listrev@master', when='@develop')
+    depends_on('py-moo@master', when='@develop')
+
