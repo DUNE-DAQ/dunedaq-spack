@@ -3,8 +3,7 @@
   :CUSTOM_ID: dev
   :END:
 
-
-** Intro
+** Introduction
    :PROPERTIES:
    :CUSTOM_ID: dev-intro
    :END:
@@ -12,178 +11,391 @@
 Here we describe how to use DUNE DAQ Spack to create various types of
 developer environments.  The basic idea is:
 
-1. a Spack *installation* provides for any dependencies we need
-2. a Spack *view* provides a base "release" against which we develop
+1. a Spack *installation* provides the dependencies we need not build
+2. a Spack *view* build from a subset of the *installation* a personal "release" against which we develop
+3. we create a development area to hold source packages which we (re)build
+4. for convenience we will install our development build in to the *view*
 
-To define our view we must decide:
+To create the view we must first decide:
 
-- which top-level packages are "seeds" for the dependency trees we need
-- do we need the top-level packages or just their dependnecy
+- which top-level package(s) will "seed" the view with dependencies
+- do we need the seeds or just their dependencies
 
-For example, if we wish to develop a package that requires only ~appfwk~
-and its dependencies then this package is our seed.  If we wish to
-develop ~appfwk~ itself then this package is still our seed but we will
-exclude it so that our view and only holds the dependencies of ~appfwk~. 
+For example, if we wish to develop a package with our own DAQ modules
+our view will need ~appfwk~.  If we wish to develop ~appfwk~, we need all
+its dependencies but should exclude the package itself.
 
-We'll use the "seed" package ~appfwk~ at version ~1.1.1~ as an example for
-the rest of this document.  
+For the examples below we will use ~appfwk~ at version ~1.1.1~ as our
+"seed" and cover the case of developing against ~appfwk~ and then
+developing ~appfwk~ itself.
 
-First, we check if a suitable build of our seed package already exists
-in the Spack *installation*:
+** Prepare
+   :PROPERTIES:
+   :CUSTOM_ID: dev-prep
+   :END:
+
+We will initially make a few ~spack~ commands.  These can be done by
+directly running the ~spack~ command or with some convenience we may use
+the shell function ~spack~ after doing:
+
+#+begin_example
+  $ source /path/to/our/spack/share/spack/setup-env.sh
+#+end_example
+
+This is only a convenience and we do not need this special environment
+when we get to actual developing.
+
+Now we may check if our "seed" package is available:
 
 #+begin_example
   $ spack find -l appfwk@1.1.1
 #+end_example
 
-If there is none, we simply install it.  Note, this needs write
-permission to the Spack *installation*.
+If this command tells us there is no ~appfwk~ package, we may simply
+install it.  
 
 #+begin_example
   $ spack install appfwk@1.1.1
 #+end_example
 
-The Spack *installation* may have more than one build of the same
-package and version.  You can pick precisely the one wanted by
-appending the first few characters of its hash after a slash as in:
+#+begin_note
+This command needs write permission to the Spack *installation*.  If our
+user account can not write to the installation then we will need to
+request this command be run from an account with sufficient privileges
+(or we may simply make our own Spack *installation*!).
+#+end_note
+
+
+Alternatively, the Spack *installation* may have more than one build of
+the same package and version.  We can pick precisely the one wanted
+by appending the first few characters of its hash after a slash as in:
 
 #+begin_example
   $ spack find -d appfwk/dow6
 #+end_example
 
-** Develop on top of ~appfwk~
+However we may need to "spell" the package (ie, provide a Spack *spec*)
+in the ~find~ command we'll use that next to make a Spack *view*.
+
+** Create a Spack view
+   :PROPERTIES:
+   :CUSTOM_ID: dev-view
+   :END:
+
+Here we show two ways to create a Spack *view*.  The first keeps our
+"seed" package, the second excludes it.  We will do all our work in
+one directory:
+
+#+begin_example
+  $ mkdir -p /path/to/our/work
+  $ cd /path/to/our/work
+#+end_example
+
+For the rest of this document we assume to have ~/path/to/our/work~ as our current working directory.
+
+*** Develop on top of ~appfwk~
    :PROPERTIES:
    :CUSTOM_ID: dev-on
    :END:
 
-In this case we want to develop a package, possibly a brand new one,
-on top of ~appfwk~.  To make a very easy developer environment we
-aggregate ~appfwk~ and all its dependencies in a Spack *view*.
+In this case we want to develop an existing package (eg ~listrev~) or a
+brand new one, on top of ~appfwk~.  We make the Spack *view* called ~view~
+to include ~appfwk~.
 
 #+begin_example
-  $ spack view add -i /path/to/my/view appfwk@1.1.1
+  $ spack view add -i view appfwk@1.1.1
 #+end_example
 
 Replace ~@1.1.1~ with eg ~/dow6~ if wanting to select a specific build by
-its hash.
+its hash. 
 
-Now see [[Shell Environment]].
-
-** Develop ~appfwk~ itself
+*** Develop ~appfwk~ itself
    :PROPERTIES:
    :CUSTOM_ID: dev-in
    :END:
 
-In this case we want to modify appfwk itself.  We make another view
-but exclude ~appfwk~ files.
+In this case we want to modify ~appfwk~ itself and so we make the Spack
+*view* to *exclude* ~appfwk~ files.
 
 #+begin_example
-  $ spack view -e appfwk add -i /path/to/my/view appfwk@1.1.1
+  $ spack view -e appfwk add -i view appfwk@1.1.1
 #+end_example
 
-Now see [[Shell Environment]].
+*** Additional packages
+    :PROPERTIES:
+    :CUSTOM_ID: dev-more
+    :END:
+
+Depending on our /native/ environment we may need or want to add
+additional packages to our Spack *view*.  For example, the version of
+~cmake~ provided by the OS may be too old.  If the Spack *installation*
+provides a better package, we can make use of it in our Spack *view*.
+
+#+begin_example
+  $ spack view add -i view cmake
+#+end_example
+
+*** Finishing
+
+We now have our Spack *view* which is like our own personal ~/usr/local~.
+
+#+begin_example
+  $ ls view/
+  bin    doc  include  LICENSE   man      README  src_utility
+  cmake  etc  lib      Makefile  perllib  share
+#+end_example
+
+#+begin_note
+If we used Spack's shell environment (~setup-env.sh~) above we can
+either continue with it or start a fresh shell.  It is neither
+required nor should it cause any problems.
+#+end_note
 
 ** Shell Environment
    :PROPERTIES:
    :CUSTOM_ID: dev-sh
    :END:
 
-Once a Spack *view* is created there is no longer any requirement to
-have any special Spack related shell environment.  The Spack *view* is
-like ~/usr/local~ and so one merely has to add a single element to the
-various ~PATH~ like variables which point to directories in the *view*.
-Eg,
+Once we created our Spack *view* (above) we no longer need the special
+Spack shell environment.  However, some minimal shell environment
+settings are required to use the software in our Spack *view*.  
+
+*** Manual setting
+    :PROPERTIES:
+    :CUSTOM_ID: dev-env-setting
+    :END:
+
+An example of setting (and unsetting) some of the shell environment
+variables is:
+
+#+begin_example
+export MYVIEW=$(pwd)/view  # shorthand, not official variable
+PATH=$MYVIEW/bin:/usr/bin:/bin
+unset LD_LIBRARY_PATH LIBRARY_PATH CMAKE_MODULE_PATH
+export CMAKE_PREFIX_PATH=$MYVIEW
+#+end_example
+
+#+begin_note
+The example intentionally restricts the environment as much as
+possible in order to provide "hermetic" build environment where we
+know exactly what we are building against.  In principle, our *view* can
+capture all the software we need so that we do not even need OS
+directories.  In practice, we will often have to include paths outside
+our *view*.
+#+end_note
+
+*** Using direnv
+
+The [[https://direnv.net][direnv]] provides one tool to nicely wrap up our development
+environment and in a way where once set up we need not remember what
+to do when we come back later.
+
+Its ~.envrc~ file would be put into our current working directory and
+its contents equivalent to the above manual setting would be like:
 
 #+begin_src shell
-myview=/path/to/my/view
-export PATH=$myview/bin:$PATH
-export CMAKE_PREFIX_PATH=$myview
-# ... etc ...
+export MYVIEW=$(pwed)/view
+unset LD_LIBRARY_PATH LIBRARY_PATH CMAKE_MODULE_PATH
+PATH=/usr/bin:/bin
+load_prefix $MYVIEW
+path_add CMAKE_PREFIX_PATH $MYVIEW
 #+end_src
 
-Using [[https://direnv.net][direnv]] this setup becomes even simpler with a ~.envrc~ file like:
+#+begin_note
+After saving the ~.envrc~ file ~direnv~ should prompt you to run ~direnv allow~ to accept the changes into your shell's environment. 
+#+end_note
 
-#+begin_src shell
-myview=/path/to/my/view
-load_prefix $myview
-path_add CMAKE_PREFIX_PATH $myview
-#+end_src
 
-You might place ~.envrc~ into wherever you plan to have your local
-source are.
-
-** Worked example: hack on ~appfwk~
+** Source area
    :PROPERTIES:
-   :CUSTOM_ID: dev-ex
+   :CUSTOM_ID: dev-src
    :END:
 
-#+begin_example
-  $ mkdir hack ; cd hack
-  $ cat <<EOF > .envrc
-  export myview=$(pwd)/view
-  load_prefix $myview
-  path_add CMAKE_PREFIX_PATH $myview
-  EOF
-  $ direnv allow
+We now prepare our source packages.  We'll put them side-by-side with
+the ~view~ we made just above.  This is not a requirement but it helps
+to keep all related work together.  We'll clone both ~appfwk~ and
+~listrev~ to cover both cases described above.
 
+#+begin_example
   $ git clone git@github.com:DUNE-DAQ/appfwk.git
-  $ mkdir build ; cd build
-  $ cmake ../appfwk/ -DCMAKE_INSTALL_PREFIX=$myview
-  $ make -j$(nproc)
-  $ make install 
-
-  $ which daq_application
-  $myview/bin/daq_application
+  $ git clone git@github.com:DUNE-DAQ/listrev.git
 #+end_example
 
-Note, at current writing there is a bug in ~appfwk/CMakeLists.txt~.
-Normally, Spack can apply the fix, but here we are building it
-manually.  We can use Spack's fix like:
+For each, we may of course now checkout/make whatever branches we want
+to work on.
+
+** Building
+   :PROPERTIES:
+   :CUSTOM_ID: dev-build
+   :END:
+
+In our two cases we either develop (eg ~listrev~) against ~appfwk~ or we
+develop ~appfwk~ itself.  One or more CMake packages may be conveniently
+built with nothing particularly special.  Taking the case where we
+develop ~appfwk~ itself as our first example:
 
 #+begin_example
-  $ cd ../appfwk/
-  $ patch -p 1 < $(spack location -p appfwk)/fix-find-dqt.patch
+  $ cmake -B build-appfwk -S appfwk -DCMAKE_INSTALL_PREFIX=$MYVIEW
+  $ cmake --build build-appfwk -j$(nproc)
+  $ cmake --install build-appfwk
+  $ ls -l view/bin/daq_application 
+  -rwxr-xr-x 1 bv bv 1953768 Sep 29 11:16 view/bin/daq_application
 #+end_example
 
-** Adding a package to Spack
+#+begin_note
+We are allowed to mix "real" files with the symlinks that populate our
+Spack *view*.  We could instead install into other areas and leave the
+*view* pristine and this would simply require another entry in our ~PATH~ like variables.  Either pattern is fine.
+#+end_note
+
+In our second example we want to build *against* ~appfwk~ and using ~listrev~ package as our example we issue the same commands but ~listrev~ named instead of ~appfwk~:
+
+#+begin_example
+  $ cmake -B build-listrev -S listrev -DCMAKE_INSTALL_PREFIX=$MYVIEW
+  $ cmake --build build-listrev -j$(nproc)
+  $ cmake --install build-listrev
+  $ ls -l view/lib/liblistrev_ListReverser_duneDAQModule.so
+  -rw-r--r-- 1 bv bv 5731464 Sep 29 11:20 view/lib/liblistrev_ListReverser_duneDAQModule.so
+#+end_example
+
+Of course, we may also want to develop *both* ~appfwk~ and ~listrev~ and any
+number of other packages all together.  We can do that by manually
+issuing ~cmake~ commands as above.  However CMake provides a very simple
+way to automate such multi-package builds.  All that is needed is a
+short, top-level ~CMakeLists.txt~ file:
+
+#+begin_example
+cmake_minimum_required(VERSION 3.12)
+project(mydev)
+add_subdirectory(appfwk)
+add_subdirectory(listrev)
+#+end_example
+
+With it we may now build and install our multi-package rather easily:
+
+#+begin_example
+  $ cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$MYVIEW
+  $ cmake --build build -j$(nproc)
+  $ cmake --install build
+#+end_example
+
+
+** Removing
+   :PROPERTIES:
+   :CUSTOM_ID: dev-nuke
+   :END:
+
+When done, after all our good changes are pushed to any remote git
+repositories, we may simple remove the entire area, including the
+~view/~, various source packages and any build areas.
+
+Along the way, we may also find some need to remove just the ~view~.
+This may be done freely as it is fast to remake.  If we have installed
+our development builds into the view we will have to rebuild.
+
+
+** Multiple views
+   :PROPERTIES:
+   :CUSTOM_ID: dev-multi-view
+   :END:
+
+We may also want to develop against *multiple views* with the same
+source.  This may be desired in order to test our changes against the
+last frozen release and also development branches. 
+
+To handle multiple views largely comes down to managing our shell
+environment to switch between using one view or another.  With ~direnv~
+this is particularly easy.  
+
+First, let's make two views
+
+#+begin_example
+  $ spack view -e appfwk add -i release-view appfwk@1.1.1
+  $ spack view -e appfwk add -i develop-view appfwk@develop
+#+end_example
+
+Then we edit our ~.envrc~ file shown in [[Using direnv]]
+
+#+begin_example
+export MYVIEW=$(pwd)/release-view
+# ... same as before
+#+end_example
+
+And build/install
+
+#+begin_example
+  $ direnv allow
+  $ cmake -B build-$MYVIEW -S . -DCMAKE_INSTALL_PREFIX=$MYVIEW
+  $ cmake --build build-$MYVIEW -j$(nproc)
+  $ cmake --install build-$MYVIEW
+#+end_example
+
+We can then go back and set ~MYVIEW~ to ~$(pwd)/develop-view~ and repeat.
+
+#+begin_note
+It is probably obvious how we may apply this same strategy to the case
+of manually modifying our shell environment settings and ~direnv~ is
+certainly not required to enact it.
+#+end_note
+
+
+** Adding our package to Spack
    :PROPERTIES:
    :CUSTOM_ID: dev-add
    :END:
 
-At some point after starting to develop a package you will likely want
-to have it built by Spack.  To do that, a simple Spack ~package.py~ is
-added to DUNE DAQ's ~dunedaq-spack~ which provides a Spack *repository*.
+At some point after we have starting to develop a new package we will
+want to have it built by Spack.  To do that, we must add a Spack
+package to ~dunedaq-spack~.  Here's we show how to do that.
 
-If not already done, add it:
+First, as we again need to run ~spack~ we may use it as a bare command
+or through the slightly more convenient shell function:
+
+#+begin_example
+  $ source /path/to/our/spack/share/spack/setup-env.sh
+#+end_example
+
+And, if not already done, we clone the DUNE DAQ Spack package
+repository and add it to our Spack installation:
 
 #+begin_example
   $ git clone git@github.com:DUNE-DAQ/dunedaq-spack.git
   $ spack repo add dunedaq-spack
 #+end_example
 
-You can then create a new Spack package with
+We can then create a new Spack package with
 
 #+begin_example
   $ spack create -r dunedaq-spack -n mypackage -t cmake
 #+end_example
 
 This will create the package directory under ~dunedaq-spack~ and open
-your ~$VISUAL~ editor with a pre-populated template.  At any time later
-you may revisit this ~package.py~ with
+our ~$VISUAL~ editor with a pre-populated template.  At any time later
+we may revisit this ~package.py~ with
 
 #+begin_example
   $ spack edit mypackage
 #+end_example
 
-You may look at ~appfwk/package.py~ or ~listrev/package.py~ which will be
-beside ~mypackage/package.py~ as an example.  Fill in:
+#+begin_note
+We could just as well edit ~dunedaq-spack/packages/<ourpackage>/package.py~ instead of using ~spack create~ or ~spack edit~.
+#+end_note
 
-- ~homepage~ :: a link to some kind of "home" for your package, which could simply be its GitHub page
-- ~url~ :: a URL for one release, again may be provided by GitHub.  Not, as new versions are added this URL can be but need not be updated.
-- ~git~ :: a URL to access the git repository, assuming you will build branches/tags
-- ~version()~ :: specify one or more versions, for releases you may generate these lines with ~spack checksum mypackage~
-- ~depends_on()~ :: list the other packages your package *immediately* depends on.  Do not list any others.  Also, avoid listing any dependencies with explicit versions unless you know what you are doing.
-- ~patch()~ :: optionally define a patch to apply (these may typically be version dependent).
+On first entry, Spack will provide a template Python class with
+various "~FIXME~" comments.  Follow them and remove them as they are
+satisfied We may look at ~appfwk/package.py~ or ~listrev/package.py~ which
+will be beside ~ourpackage/package.py~ to provide examples of settings.
+For most packages based on ~daq-buildtools~ CMake support we need
+provide only the following:
 
-That's it.  It should be the case that any ~appfwk~-like packages need
-no special Spack methods defined.  If your package has special needs
-besides running ~cmake/make/make install~ see the Spack documentation.
+- ~homepage~ :: a link to some kind of "home" for our package, which could simply be its GitHub page.
+- ~url~ :: a URL for one particular release, again may be provided by GitHub.  Note, as new versions are added this URL need not be updated (but can be).  Spack is smart enough to figure out new ~url~ values based on a new version string.
+- ~git~ :: a URL to access the git repository.  This is only needed if there will be any versions defined based on git branches or tags.
+- ~version()~ :: specify a version to build.  For releases from ~url~ we may generate these lines with ~spack checksum ourpackage~.
+- ~depends_on()~ :: list the other packages our package *immediately* depends on.  Do not list any others.  Normally, avoid listing any dependencies with explicit versions unless absolutely needed (release level dependencies are handled elsewhere).
+- ~patch()~ :: optionally define a patch to apply.  These typically depend on a version or version range.
+
+Some package may require special actions for building and installing.
+These may be satisfied by providing various Python class methods.  If
+our package has such special needs we'll look to the [[https://spack.readthedocs.io][Spack
+documentation]] for details.
