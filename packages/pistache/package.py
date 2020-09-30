@@ -35,3 +35,4 @@ class Pistache(CMakePackage):
 
     version('master', branch='master')
     depends_on('openssl')
+    depends_on('libpthread-stubs')

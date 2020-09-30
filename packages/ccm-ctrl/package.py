@@ -23,4 +23,4 @@ class CcmCtrl(CMakePackage):
 
     depends_on('pistache')
 
-    patch("fix-find-dqt.patch")
+    patch("fix-cmakelists.patch")
