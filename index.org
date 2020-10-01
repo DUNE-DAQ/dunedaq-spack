@@ -6,6 +6,8 @@
 #+HTML_HEAD: <style> li{max-width:800px;}</style>
 #+OPTIONS:   H:4 num:nil toc:2
 
+#+include: docs/intro.org
+
 #+include: docs/quick-start.org
 
 #+include: docs/usrenv.org
