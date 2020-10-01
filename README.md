@@ -4,6 +4,8 @@ Documentation is at https://dune-daq.github.io/dunedaq-spack/.
 
 Or, locally it is found under [docs/](docs/).
 
+**NB** This is currently considered for evaluation and does not represent an official installation method.
+
 
 
 ## Packages modified from the official spack distribution (folly and its dependencies):
