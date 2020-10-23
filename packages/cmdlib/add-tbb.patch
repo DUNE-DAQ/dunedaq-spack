@@ -1,0 +1,13 @@
+--- a/CMakeLists.txt	2020-10-23 09:56:54.740969517 -0400
++++ b/CMakeLists.txt	2020-10-23 09:49:50.015011673 -0400
+@@ -8,8 +8,9 @@
+ find_package(cetlib REQUIRED)
+ find_package(ers REQUIRED)
+ find_package(nlohmann_json REQUIRED)
++find_package(TBB REQUIRED)
+ 
+-set(CMDLIB_DEPENDENCIES ${CETLIB} ${CETLIB_EXCEPT} ers::ers nlohmann_json::nlohmann_json)
++set(CMDLIB_DEPENDENCIES ${CETLIB} ${CETLIB_EXCEPT} ers::ers nlohmann_json::nlohmann_json ${TBB_IMPORTED_TARGETS})
+ 
+ ##############################################################################
+ # Main library
